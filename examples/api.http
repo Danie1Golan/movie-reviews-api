@@ -1,0 +1,68 @@
+### VS Code REST Client (optional) — API examples
+@baseUrl = http://localhost:3000
+@adminJwt = REPLACE_WITH_ADMIN_JWT
+@userJwt = REPLACE_WITH_USER_JWT
+@movieId = REPLACE_WITH_MOVIE_ID
+@reviewId = REPLACE_WITH_REVIEW_ID
+
+### Health
+GET {{baseUrl}}/health
+
+### Register
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Alice Doe",
+  "email": "alice@example.com",
+  "password": "StrongPassword123!"
+}
+
+### Login (admin account is created via npm run seed:admin)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "REPLACE_WITH_ADMIN_PASSWORD"
+}
+
+### Create movie (admin)
+POST {{baseUrl}}/api/movies
+Authorization: Bearer {{adminJwt}}
+Content-Type: application/json
+
+{
+  "title": "Interstellar",
+  "year": 2014,
+  "genre": "Science Fiction",
+  "director": "Christopher Nolan",
+  "actors": ["Matthew McConaughey", "Anne Hathaway"],
+  "description": "Explorers venture through a wormhole to save humanity."
+}
+
+### List movies with filters
+GET {{baseUrl}}/api/movies?search=inter&year=2014&page=1&limit=10
+
+### Get details, count and rating
+GET {{baseUrl}}/api/movies/{{movieId}}
+
+### Create review (user)
+POST {{baseUrl}}/api/movies/{{movieId}}/reviews
+Authorization: Bearer {{userJwt}}
+Content-Type: application/json
+
+{
+  "rating": 9,
+  "text": "Wonderful acting and an exciting story."
+}
+
+### Read reviews
+GET {{baseUrl}}/api/movies/{{movieId}}/reviews
+
+### Update review
+PATCH {{baseUrl}}/api/reviews/{{reviewId}}
+Authorization: Bearer {{userJwt}}
+Content-Type: application/json
+
+{"rating":10}
