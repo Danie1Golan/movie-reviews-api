@@ -1,4 +1,4 @@
-import { type FilterQuery, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { Movie, type IMovie } from '../models/Movie';
 import { Review } from '../models/Review';
 import type { z } from 'zod';
@@ -44,7 +44,7 @@ async function statsByMovieId(ids: Types.ObjectId[]): Promise<Map<string, MovieS
 }
 
 export async function listMovies(input: z.infer<typeof movieQuerySchema>) {
-  const filter: FilterQuery<IMovie> = {};
+  const filter: { title?: RegExp; genre?: RegExp; director?: RegExp; year?: number } = {};
   if (input.search) filter.title = escapedRegex(input.search);
   if (input.genre) filter.genre = escapedRegex(input.genre);
   if (input.director) filter.director = escapedRegex(input.director);
